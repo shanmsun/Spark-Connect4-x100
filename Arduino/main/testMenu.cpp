@@ -1,4 +1,6 @@
 #include "testMenu.h"
+#include "tile.h"
+#include "constants.h"
 #include "Arduino.h"
 
 char* testMenuOptions[] = {
@@ -58,13 +60,13 @@ void testBoard(){
  //todo 
 }
 
-void testRow(){
+void testRow(int row){
   //todo
 }
 
-void testColumn(){
+void testColumn(int column){
   //todo
 }
-void testTile(){
-  //todo
+void testTile(int row, int col){
+
 }
