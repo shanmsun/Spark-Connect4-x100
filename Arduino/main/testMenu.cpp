@@ -1,5 +1,5 @@
-#include "testMenu.h"
 #include "tile.h"
+#include "testMenu.h"
 #include "constants.h"
 #include "Arduino.h"
 
@@ -57,16 +57,26 @@ void parseResponse(){
 }
 
 void testBoard(){
- //todo 
+  for(int row = 0; row < ROWS; row++){
+    testRow(row); 
+  }
 }
 
 void testRow(int row){
-  //todo
+  for(int column = 0; column < COLUMNS; column++){
+     testTile(row, column); 
+  }
 }
 
 void testColumn(int column){
-  //todo
+  for(int row = 0; row < ROWS; row++){
+    testTile(row, column); 
+  }
 }
-void testTile(int row, int col){
 
+void testTile(int row, int col){
+  Tile tile = TILES_ARRAY[row][col];
+  tile.setColour(true, false);
+  tile.setColour(false, false);
+  tile.setColour(false, true);
 }

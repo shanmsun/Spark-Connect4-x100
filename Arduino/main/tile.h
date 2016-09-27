@@ -6,6 +6,7 @@
       bool m_white;
 
     public:
+      Tile();
       Tile(bool green, bool white); 
       void setColour(bool green, bool white); 
   };

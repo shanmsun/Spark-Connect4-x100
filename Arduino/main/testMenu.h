@@ -1,3 +1,5 @@
+#include "tile.h"
+
 #ifndef TESTMENU_H
 #define TESTMENU_H
   void runTestMenu();

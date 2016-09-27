@@ -1,5 +1,9 @@
 #include "tile.h"
 
+Tile::Tile(){
+  setColour(false, false);
+}
+
 Tile::Tile(bool green, bool white){
   setColour(green, white); 
 }

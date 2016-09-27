@@ -1,5 +1,8 @@
+#include "tile.h"
+
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
-  int ROWS = 6;
-  int COLUMNS = 7; 
+  const int ROWS = 6;
+  const int COLUMNS = 7;
+  Tile TILES_ARRAY[ROWS][COLUMNS]; 
 #endif
