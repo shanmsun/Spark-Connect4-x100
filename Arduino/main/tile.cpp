@@ -1,4 +1,6 @@
 #include "tile.h"
+#include "LedControl.h"
+#include "constants.h"
 
 Tile::Tile(){
   setColour(false, false);
@@ -16,6 +18,9 @@ void Tile::setColour(bool green, bool white){
   
   m_green = green;
   m_white = white;
+
+  whiteMaxim.setLed(0, m_row, m_column, m_white);
+  greenMaxim.setLed(0, m_row, m_column, m_green);
 
   return;
 }
