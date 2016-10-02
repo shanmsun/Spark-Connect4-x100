@@ -4,5 +4,5 @@
 #define CONSTANTS_H
   const int ROWS = 6;
   const int COLUMNS = 7;
-  Tile TILES_ARRAY[ROWS][COLUMNS]; 
+  extern Tile TILES_ARRAY[ROWS][COLUMNS]; 
 #endif

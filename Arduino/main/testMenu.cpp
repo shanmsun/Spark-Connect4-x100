@@ -22,12 +22,13 @@ void runTestMenu(){
 }
 
 void printTestMenu(){
-  Serial.println("----------Mega Connect 4 Boot Menu-----------");
+  Serial.println("----------Connect 4 x100 Boot Menu-----------");
   for(int i=0; i<5; i++){
     char option[100]; 
     sprintf(option, "%i - %s", i, testMenuOptions[i]);
     Serial.println(option);
   }
+  Serial.println("---------------------------------------------");
 }
 
 void parseResponse(){ 
@@ -77,6 +78,9 @@ void testColumn(int column){
 void testTile(int row, int col){
   Tile tile = TILES_ARRAY[row][col];
   tile.setColour(true, false);
+  delay(500);
   tile.setColour(false, false);
+  delay(500);
   tile.setColour(false, true);
+  delay(500);
 }
