@@ -13,6 +13,11 @@ char* testMenuOptions[] = {
 
 int option = -1;
 
+/*
+ * Print out the menu and parses for a response. 
+ * This function is in an infinite loop unless the user manually enters
+ * the option to quit
+ */
 void runTestMenu(){
   printTestMenu();
   while(option != 0){
@@ -21,6 +26,9 @@ void runTestMenu(){
   Serial.println("Exiting Test");
 }
 
+/*
+ * Prints out the options based on the array defined at the top. 
+ */
 void printTestMenu(){
   Serial.println("----------Connect 4 x100 Boot Menu-----------");
   for(int i=0; i<5; i++){
@@ -31,6 +39,10 @@ void printTestMenu(){
   Serial.println("---------------------------------------------");
 }
 
+/*
+ * Parses the option the user selects. The number associated to the menu option 
+ * are based on the order in which the options are in the array 
+ */
 void parseResponse(){ 
   Serial.print("> ");
   

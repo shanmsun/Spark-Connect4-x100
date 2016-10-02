@@ -12,6 +12,10 @@ Tile::Tile(bool green, bool white){
   m_coord_is_set = false;  
 }
 
+/*
+ * This sets the colour of the class based on the 2 flags
+ * Afterwards, it sends the changes to the Maxim
+ */
 void Tile::setColour(bool green, bool white){
   if(green && white)
     return; 
@@ -25,6 +29,9 @@ void Tile::setColour(bool green, bool white){
   return;
 }
 
+/*
+ * Assigns each instantiated Tile class to a co-ordinate system
+ */
 void Tile::setCoordinates(int row, int column){
   if(!m_coord_is_set){
     m_column = column;
