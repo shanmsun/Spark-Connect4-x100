@@ -89,10 +89,10 @@ void testColumn(int column){
 
 void testTile(int row, int col){
   Tile tile = TILES_ARRAY[row][col];
-  tile.setColour(true, false);
+  tile.setColour(WHITE);
   delay(500);
-  tile.setColour(false, false);
+  tile.setColour(NO_COLOUR);
   delay(500);
-  tile.setColour(false, true);
+  tile.setColour(GREEN);
   delay(500);
 }

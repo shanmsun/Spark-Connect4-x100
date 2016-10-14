@@ -5,6 +5,11 @@
 #define CONSTANTS_H
   const int ROWS = 6;
   const int COLUMNS = 7;
+
+  const int NO_COLOUR = 0;
+  const int GREEN = 1;
+  const int WHITE = 2;
+  
   extern Tile TILES_ARRAY[ROWS][COLUMNS]; 
   extern LedControl whiteMaxim;
   extern LedControl greenMaxim; 

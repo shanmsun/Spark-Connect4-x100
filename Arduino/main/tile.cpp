@@ -3,12 +3,12 @@
 #include "constants.h"
 
 Tile::Tile(){
-  setColour(false, false);
+  setColour(NO_COLOUR);
   m_coord_is_set = false; 
 }
 
-Tile::Tile(bool green, bool white){
-  setColour(green, white);
+Tile::Tile(int colour){
+  setColour(colour);
   m_coord_is_set = false;  
 }
 
@@ -16,15 +16,18 @@ Tile::Tile(bool green, bool white){
  * This sets the colour of the class based on the 2 flags
  * Afterwards, it sends the changes to the Maxim
  */
-void Tile::setColour(bool green, bool white){
-  if(green && white)
-    return; 
+void Tile::setColour(int colour){
+  bool isGreen = false;
+  bool isWhite = false; 
   
-  m_green = green;
-  m_white = white;
-
-  whiteMaxim.setLed(0, m_row, m_column, m_white);
-  greenMaxim.setLed(0, m_row, m_column, m_green);
+  if (colour == GREEN){
+    isGreen = true;
+  } else if (colour == WHITE){
+    isWhite = true;
+  }
+  
+  whiteMaxim.setLed(0, m_row, m_column, isWhite);
+  greenMaxim.setLed(0, m_row, m_column, isGreen);
 
   return;
 }
