@@ -14,6 +14,7 @@
       void setCoordinates(int row, int column); 
       int getColumn();
       int getRow();
+      int getColour();
   };
 
 #endif

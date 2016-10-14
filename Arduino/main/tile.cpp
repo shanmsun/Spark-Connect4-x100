@@ -25,6 +25,8 @@ void Tile::setColour(int colour){
   } else if (colour == WHITE){
     isWhite = true;
   }
+
+  m_colour = colour;
   
   whiteMaxim.setLed(0, m_row, m_column, isWhite);
   greenMaxim.setLed(0, m_row, m_column, isGreen);
@@ -50,5 +52,9 @@ int Tile::getColumn(){
 
 int Tile::getRow(){
   return m_row;
+}
+
+int Tile::getColour(){
+  return m_colour;
 }
 
