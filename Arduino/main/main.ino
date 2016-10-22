@@ -3,7 +3,7 @@
 #include "constants.h"
 
 Tile TILES_ARRAY[ROWS][COLUMNS];
-int columnButtons[3][COLUMNS];
+int columnButtons[COLUMNS][3];
 int AIButton[3];
 int startResetButton[3];
 

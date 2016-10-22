@@ -2,13 +2,19 @@
 #include "testMenu.h"
 #include "constants.h"
 #include "Arduino.h"
+#include "connect_4.h"
 
 char* testMenuOptions[] = {
   "Skip Test",
   "Test Entire Board",
   "Test Entire Row",
   "Test Entire Column",
-  "Test Individual Tile"
+  "Test Individual Tile",
+  "Read Column Switches",
+  "Read Start/Reset Switch",
+  "Read AI Switch",
+  "Turn on indicator for white",
+  "Turn on indicator for green"
 };
 
 int option = -1;
@@ -96,3 +102,53 @@ void testTile(int row, int col){
   tile.setColour(GREEN);
   delay(500);
 }
+
+int testSwitch(int *buttonObj){
+  return switchToggled(buttonObj[0], &buttonObj[1], &buttonObj[2]) ? 1 : 0;
+}
+
+void voidSwitchResult(bool isMultiple, bool isReset){
+  Serial.print("This will print out when the switch transitioned from 0->1 over the span of 10 seconds");
+
+  unsigned long endTime = millis() + 10000;
+  while( millis() < endTime){
+    int *result;
+
+    if(isMultiple){
+      int value[] = {
+        testSwitch(columnButtons[0]), testSwitch(columnButtons[1]), 
+        testSwitch(columnButtons[2]), testSwitch(columnButtons[3]), 
+        testSwitch(columnButtons[4]), testSwitch(columnButtons[5]), 
+        testSwitch(columnButtons[6]), 
+      };
+
+      result = value;
+    } else {
+      int value[] = {
+        testSwitch(startResetButton), testSwitch(AIButton), 
+        -1, -1, -1, -1, -1
+      };
+      result = value; 
+    }
+
+    char option[100]; 
+    sprintf(option, "%d -%d -%d -%d -%d -%d -%d", result[0], result[1], result[2],
+    result[3], result[4], result[5], result[6]);
+    Serial.println(option);
+  }
+}
+
+void turnOnGreen(){
+  Serial.println("Turning on green");
+  displayTurn(GREEN);
+  delay(1000);
+  digitalWrite(PLAYER_G_INDICATOR_PIN, LOW); 
+}
+
+void turnOnWhite(){
+  Serial.println("Turning on white");
+  displayTurn(WHITE);
+  delay(1000);
+  digitalWrite(PLAYER_W_INDICATOR_PIN, LOW); 
+}
+

@@ -16,9 +16,10 @@
     }
 
     if(*lastValue != currentValue){
-      *lastValue = currentValue;
+      // inverted because it's pulled HIGH by default
+      *lastValue = !currentValue;
       *lastActivated = now;
-      return currentValue;
+      return !currentValue;
     }
   }
 
@@ -101,7 +102,7 @@
 			  col = -1;
 		  }
 		  col += 1;
-		  val = switchToggled(columnButtons[0][col], &columnButtons[1][col], &columnButtons[2][col]);
+		  val = switchToggled(columnButtons[col][0], &columnButtons[col][1], &columnButtons[col][2]);
 	  }
 	  return col;
   }
