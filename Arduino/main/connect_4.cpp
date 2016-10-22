@@ -44,7 +44,7 @@ int BUTTON_pin[1][COLUMNS];
 	  return ERROR; //column full, try again
   }
 
-  /*  
+  /*
    *   Displays which side won by turning all the tiles to the colour of the
    *   winning side
    */
