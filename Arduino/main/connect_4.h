@@ -1,23 +1,21 @@
 /*
  * connect_4.h
  *
- *  Created on: 2016Äê10ÔÂ21ÈÕ
+ *  Created on: 2016ï¿½ï¿½10ï¿½ï¿½21ï¿½ï¿½
  *      Author: Shanmeng
  */
 
+#include "tile.h"
+#include "constants.h"
+
 #ifndef CONNECT_4_H_
 #define CONNECT_4_H_
-  void RunGame();
-  void DisplayTurn();
-  void Gamesetup();
-  void reset();
-  int WaitTillTilePlacemant();
-  void WaitAndDisplayWinner();
-  void SwichUser();
-  int Place(int col);
-  int checkBoard();
-  int checkRow(int row);
-  int checkColumn(int col);
-  int checkDiagnolLeftUp(int row, int col);
-  int checkDiagnolRightUp(int row, int col);
+  void runGame(Tile tileArray[][COLUMNS]);
+  void displayTurn();
+  void setupGame(Tile tileArray[][COLUMNS]);
+  void resetGame(Tile tileArray[][COLUMNS]);
+  int waitTillTilePlacemant();
+  void waitAndDisplayWinner(Tile tileArray[][COLUMNS]);
+  void switchUser();
+  int placeDisc(int col, Tile tileArray[][COLUMNS]);
 #endif /* CONNECT_4_H_ */
