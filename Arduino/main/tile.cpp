@@ -4,12 +4,12 @@
 
 Tile::Tile(){
   setColour(NO_COLOUR);
-  m_coord_is_set = false; 
+  m_coord_is_set = false;
 }
 
 Tile::Tile(int colour){
   setColour(colour);
-  m_coord_is_set = false;  
+  m_coord_is_set = false;
 }
 
 /*
@@ -18,8 +18,8 @@ Tile::Tile(int colour){
  */
 void Tile::setColour(int colour){
   bool isGreen = false;
-  bool isWhite = false; 
-  
+  bool isWhite = false;
+
   if (colour == GREEN){
     isGreen = true;
   } else if (colour == WHITE){
@@ -27,7 +27,7 @@ void Tile::setColour(int colour){
   }
 
   m_colour = colour;
-  
+
   whiteMaxim.setLed(0, m_row, m_column, isWhite);
   greenMaxim.setLed(0, m_row, m_column, isGreen);
 
@@ -40,10 +40,10 @@ void Tile::setColour(int colour){
 void Tile::setCoordinates(int row, int column){
   if(!m_coord_is_set){
     m_column = column;
-    m_row = row; 
+    m_row = row;
   }
 
-  m_coord_is_set = true; 
+  m_coord_is_set = true;
 }
 
 int Tile::getColumn(){
@@ -57,4 +57,3 @@ int Tile::getRow(){
 int Tile::getColour(){
   return m_colour;
 }
-
