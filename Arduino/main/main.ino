@@ -3,7 +3,7 @@
 #include "constants.h"
 
 Tile TILES_ARRAY[ROWS][COLUMNS];
-int columnButtons[3][COLUMNS];
+int columnButtons[COLUMNS][3];
 int AIButton[3];
 int startResetButton[3];
 
@@ -12,11 +12,12 @@ LedControl greenMaxim = LedControl(G_DATA_PIN, G_CLOCK_PIN, G_CS_PIN, NUM_MAXIMS
 
 void setup() {
   // put your setup code here, to run once:
+  setupGame(TILES_ARRAY); //set up board for Connect 4 game
+  
   if(Serial){
-    Serial.begin(9600);
+    Serial.begin(115200);
     runTestMenu();
   }
-	setupGame(TILES_ARRAY); //set up board for Connect 4 game
 }
 
 void loop() {

@@ -2,13 +2,19 @@
 #include "testMenu.h"
 #include "constants.h"
 #include "Arduino.h"
+#include "connect_4.h"
 
 char* testMenuOptions[] = {
   "Skip Test",
   "Test Entire Board",
   "Test Entire Row",
   "Test Entire Column",
-  "Test Individual Tile"
+  "Test Individual Tile",
+  "Read Column Switches",
+  "Read Start/Reset Switch",
+  "Read AI Switch",
+  "Turn on indicator for white",
+  "Turn on indicator for green"
 };
 
 int option = -1;
@@ -31,7 +37,7 @@ void runTestMenu(){
  */
 void printTestMenu(){
   Serial.println("----------Connect 4 x100 Boot Menu-----------");
-  for(int i=0; i<5; i++){
+  for(int i=0; i<10; i++){
     char option[100]; 
     sprintf(option, "%i - %s", i, testMenuOptions[i]);
     Serial.println(option);
@@ -49,24 +55,60 @@ void parseResponse(){
   while(Serial.available() <= 0){
   }
 
-  option = Serial.read();
-  Serial.println((char) option);
-  switch ((char) option){
-    case '0':
+  option = Serial.parseInt();
+  Serial.println((int) option);
+  switch ((int) option){
+    case 0:
       Serial.println("Quitting...");
       break;
-    case '1':
+    case 1:
+      Serial.println("Testing board...");
+      testBoard();
       break;
-    case '2':
+    case 2:{
+      Serial.println("Testing row...");
+      int row = Serial.parseInt();
+      
+      Serial.println((int)row);
+      testRow(row);}
       break;
-    case '3':
+    case 3:{
+      Serial.println("Testing col...");
+      int col = Serial.parseInt();
+      testColumn(col);
+    }
       break;
-    case '4':
+    case 4:{
+      Serial.println("Testing individual tile...");
+      int row = Serial.parseInt();
+      int col = Serial.parseInt();
+      testTile(row, col);}
+      break;
+    case 5:
+      Serial.println("Testing column switches...");
+      testSwitchResult(true, false);
+      break;
+    case 6:
+      Serial.println("Testing start/reset switch tile...");
+      testSwitchResult(false, true);
+      break;
+    case 7:
+      Serial.println("Testing AI switch...");
+      testSwitchResult(false, true);
+      break;
+    case 8:
+      Serial.println("Testing white indicator...");
+      turnOnWhite();
+      break;
+    case 9:
+      Serial.println("Testing green indicator...");
+      turnOnGreen();
       break;
     default:
       Serial.println("Invalid option entered");
       break;
   }
+  Serial.println("Done");
 }
 
 void testBoard(){
@@ -96,3 +138,54 @@ void testTile(int row, int col){
   tile.setColour(GREEN);
   delay(500);
 }
+
+int testSwitch(int *buttonObj){
+  return switchToggled(buttonObj[0], &buttonObj[1], &buttonObj[2]) ? 1 : 0;
+}
+
+void testSwitchResult(bool isMultiple, bool isReset){
+  Serial.println("This will print out when the switch transitioned from 0->1 over the span of 10 seconds");
+
+  unsigned long endTime = millis() + 10000;
+  while( millis() < endTime){
+
+    int result[] = {0, 0, 0, 0, 0, 0, 0};
+    if(isMultiple){
+      result[0] = testSwitch(columnButtons[0]);
+      result[1] = testSwitch(columnButtons[1]);
+      result[2] = testSwitch(columnButtons[2]);
+      result[3] = testSwitch(columnButtons[3]);
+      result[4] = testSwitch(columnButtons[4]);
+      result[5] = testSwitch(columnButtons[5]);
+      result[6] = testSwitch(columnButtons[6]);
+    } else {
+      result[0] = testSwitch(startResetButton);
+      result[1] = testSwitch(AIButton);
+      result[2] = -1;
+      result[3] = -1;
+      result[4] = -1;
+      result[5] = -1;
+      result[6] = -1;
+    }
+
+    char option[100];
+    sprintf(option, "%d \t%d \t%d \t%d \t%d \t%d \t%d", result[0], result[1], result[2],
+    result[3], result[4], result[5], result[6]);
+    Serial.println(option);
+  }
+}
+
+void turnOnGreen(){
+  Serial.println("Turning on green");
+  displayTurn(GREEN);
+  delay(1000);
+  digitalWrite(PLAYER_G_INDICATOR_PIN, LOW); 
+}
+
+void turnOnWhite(){
+  Serial.println("Turning on white");
+  displayTurn(WHITE);
+  delay(1000);
+  digitalWrite(PLAYER_W_INDICATOR_PIN, LOW); 
+}
+
