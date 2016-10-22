@@ -7,6 +7,48 @@ The display is a giagantic and electronic version of Connect 4. Instead of physi
 ## Workshop- i.e. "Marathon Building Session"
 This display will be built over the weekend and be completed within 2 weekend session (~10 hours). In this workshop, the exec team and volunteers/passion individual will stop by and race to build this display! The aim is to get the display out by October 23rd.   
 
+## Code
+The code can be divided up into lots of chunks. Here is a basic breakdown
+```c
+ - constants.h = Shares any constants/flags and external variables that will need to be shared across the entire code
+ - IOPins.h = a pin mapout of what belongs to which Arduino port
+ - testMenu.h & testMenu.cpp = an in-built diagnostic tool to help test the circuit 
+ - connect_4.h & connect_4.cpp = executes the connect 4 sequence
+ - connect_4_check_win.h & connect_4_check_win.cpp = a algorithm to check if a player has won  
+
+```
+
+```c
+ testMenu.h:
+  void runTestMenu();
+  void printTestMenu();
+  void parseResponse();
+  void testBoard();
+  void testRow(int row);
+  void testColumn(int column);
+  void testTile(int row, int column);
+```
+```c
+ connect_4.h:
+  bool switchToggled(int switchPin, int* lastValue, int* lastActivated);
+  void runGame(Tile tileArray[][COLUMNS]);
+  void displayTurn(int currentPlayer);
+  void setupGame(Tile tileArray[][COLUMNS]);
+  void resetGame(Tile tileArray[][COLUMNS]);
+  int waitTillTilePlacemant();
+  void waitAndDisplayWinner(int currentPlayer, Tile tileArray[][COLUMNS]);
+  void switchUser(int *currentPlayer);
+  int placeDisc(int col, Tile tileArray[][COLUMNS]);
+```
+```c
+ connect_4_check_wins.h:
+  int checkBoard(int currentPlayer);
+  int checkRow(int currentPlayer, int row);
+  int checkColumn(int currentPlayer, int col);
+  int checkDiagonalLeftUp(int currentPlayer, int row, int col);
+  int checkDiagonalRightUp(int currentPlayer, int row, int col);
+```
+
 ## Features
 
 ## Design
