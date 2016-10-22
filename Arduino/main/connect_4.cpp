@@ -4,12 +4,9 @@
 #include "Arduino.h"
 
 int BUTTON_pin[1][COLUMNS];
-int TilePlacement;
-int BOARD[ROWS][COLUMNS];
-int TURN = WHITE;
 
-  /*  
-   * Swaps the current user 
+  /*
+   * Swaps the current user
    */
   void switchUser(int *currentPlayer){
     if (*currentPlayer == WHITE){
@@ -38,10 +35,8 @@ int TURN = WHITE;
    */
   int placeDisc(int currentPlayer, int col, Tile tileArray[][COLUMNS]){
 	  for(int row = 0; row < ROWS; row++){
-		  if (BOARD[row][col] == NO_COLOUR){
-			  BOARD[row][col] = currentPlayer;
-			  Tile tile = tileArray[row][col];
-			  tile.setColour(currentPlayer);
+		  if (tileArray[row][col].getColour() == NO_COLOUR){
+			  tileArray[row][col].setColour(currentPlayer);
 			  return 1;
 		  }
 	  }
@@ -49,28 +44,21 @@ int TURN = WHITE;
 	  return ERROR; //column full, try again
   }
 
+  /*  
+   *   Displays which side won by turning all the tiles to the colour of the
+   *   winning side
+   */
   void waitAndDisplayWinner(int currentPlayer, Tile tileArray[][COLUMNS]){
-	  int val = LOW;                                   //Change according to button
 	  //Display all tiles in winning colour
 	  Serial.println("Displaying winner......");
-	  for(int row = ROWS; row >0; row--){
+	  for(int row = 0; row >ROWS; row++){
 		  for(int col = 0; col < COLUMNS; col++){
 	  	  		Tile tile = tileArray[row][col];
 	  	  		tile.setColour(currentPlayer);
 	  	  	}
 	  }
 	  delay(5000);
-	  for(int row = ROWS; row >0; row--){
-
-		  for(int col = 0; col < COLUMNS; col++){
-		  	  	Tile tile = tileArray[row][col];
-		  	  	tile.setColour(BOARD[row][col]);
-		  }
-	  }
 	  Serial.println("Wait until restarted");
-	  while(val != HIGH){
-	  	val = digitalRead(START_RESET_BUTTON);
-	  }
   }
 
   /*
@@ -96,9 +84,7 @@ int TURN = WHITE;
     Serial.println("Resetting......");
     for(int row = 0; row < ROWS; row++){
           for(int col = 0; col < COLUMNS; col++){
-            Tile tile = tileArray[row][col];
-            tile.setColour(NO_COLOUR);
-            BOARD[row][col] = NO_COLOUR;
+            tileArray[row][col].setColour(NO_COLOUR);
           }
         }
     Serial.println("All tiles set to no colour.");
@@ -115,35 +101,32 @@ int TURN = WHITE;
   }
 
   void runGame(Tile tileArray[][COLUMNS]){
+    resetGame(tileArray);
     int player = WHITE;
-	  while(ERROR == 0){
-		  int winner = NO_COLOUR;
-		  Serial.println("Start new Connect 4 game...");
-		  resetGame(tileArray);
+	  int winner = NO_COLOUR;
+    int TilePlacement;
 
-		  while (winner == NO_COLOUR){
-			  int placed = 0;
-			  switchUser(&player);
-			  displayTurn(player);
+	  Serial.println("Start new Connect 4 game...");
 
-			  Serial.println("Turn displayed...");
-			  Serial.println("Please place a tile...");
+	  while (winner == NO_COLOUR){
+		  int isPlaced = 0;
+		  switchUser(&player);
+		  displayTurn(player);
 
-			  while (!placed){
-				  TilePlacement = waitTillTilePlacemant();
+		  Serial.println("Turn displayed...");
+		  Serial.println("Please place a tile...");
 
-				  Serial.println("Placing the tile...");
-
-				  placed = placeDisc(player, TilePlacement, tileArray);
-			  }
-
-			  Serial.println("Tile placed...");
-			  Serial.println("Checking win...");
-
-			  winner = checkBoard();
+		  while (!isPlaced){
+			  TilePlacement = waitTillTilePlacemant();
+			  Serial.println("Placing the tile...");
+			  isPlaced = placeDisc(player, TilePlacement, tileArray);
 		  }
 
-		  waitAndDisplayWinner(winner, tileArray);
+		  Serial.println("Tile placed...");
+		  Serial.println("Checking win...");
+
+		  winner = checkBoard(player);
 	  }
 
+	  waitAndDisplayWinner(winner, tileArray);
   }

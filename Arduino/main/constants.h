@@ -19,8 +19,6 @@
   extern Tile TILES_ARRAY[ROWS][COLUMNS];
   extern LedControl whiteMaxim;
   extern LedControl greenMaxim;
-  extern int BOARD[ROWS][COLUMNS];
-  extern int TURN;
 
   // MAXIM pin configuraitons
   const int W_DATA_PIN = 12;
