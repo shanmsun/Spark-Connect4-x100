@@ -10,6 +10,7 @@
 
 #ifndef CONNECT_4_H_
 #define CONNECT_4_H_
+  bool switchToggled(int switchPin, int* lastValue, int* lastActivated);
   void runGame(Tile tileArray[][COLUMNS]);
   void displayTurn(int currentPlayer);
   void setupGame(Tile tileArray[][COLUMNS]);

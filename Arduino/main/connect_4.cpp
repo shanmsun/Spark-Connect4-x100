@@ -4,6 +4,24 @@
 #include "Arduino.h"
 
 int BUTTON_pin[1][COLUMNS];
+  /*
+  * This function checks if a mechanical switch has been activated. The time constant, 'DEBOUNCE_DELAY'
+  * avoids activated a false signal due to bouncing in the switch
+  */
+  bool switchToggled(int switchPin, int* lastValue, int* lastActivated){
+    int now = millis();
+    int currentValue = digitalRead(switchPin) == HIGH ? 1 : 0;
+
+    if( (now - *lastActivated) < DEBOUCE_DELAY){
+      return false;
+    }
+
+    if(*lastValue != currentValue){
+      *lastValue = currentValue;
+      *lastActivated = now;
+      return currentValue;
+    }
+  }
 
   /*
    * Swaps the current user
@@ -72,7 +90,7 @@ int BUTTON_pin[1][COLUMNS];
 			  col = -1;
 		  }
 		  col += 1;
-		  val = digitalRead(BUTTON_pin[1][col]);
+		  val = switchToggled(columnButtons[0][col], &columnButtons[1][col], &columnButtons[2][col]);
 	  }
 	  return col;
   }
@@ -92,8 +110,11 @@ int BUTTON_pin[1][COLUMNS];
 
   void setupGame(Tile tileArray[][COLUMNS]){
 	  for (int col = 0; col < COLUMNS; col++){
-		  BUTTON_pin[1][col] = col;                      //Change to actual pin on arduino
-		  pinMode(BUTTON_pin[1][col], INPUT);
+      columnButtons[0][col] = COLUMN_BUTTONS[col];
+      columnButtons[1][col] = (int) millis();
+      columnButtons[2][col] = HIGH;
+
+		  pinMode(COLUMN_BUTTONS[col], INPUT_PULLUP);
 	  }
 	  pinMode(PLAYER_G_INDICATOR, OUTPUT);
 	  pinMode(PLAYER_W_INDICATOR, OUTPUT);

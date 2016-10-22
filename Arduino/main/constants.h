@@ -16,9 +16,22 @@
   const int GREEN = 1;
   const int WHITE = 2;
 
+  // debounce delay (ms)
+  const int DEBOUCE_DELAY = 250;
+
   // external variables that will need to be shared
   extern Tile TILES_ARRAY[ROWS][COLUMNS];
   extern LedControl whiteMaxim;
   extern LedControl greenMaxim;
+
+  /*  a multiarray that stores the button values due to debouncing issues
+   *  each column contains (in order from top-0 to bottom-2):
+   *   - assigned pin
+   *   - previous value
+   *   - time when previous value was obtained
+   */
+  extern int columnButtons[3][COLUMNS];
+  extern int AIButton[3][0];
+  extern int startResetButton[3][0];
 
 #endif

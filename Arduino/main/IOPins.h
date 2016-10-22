@@ -22,6 +22,6 @@
   const int AI_BUTTON = 3;
 
   // column buttons
-  const int COLUMN_BUTTONS = [1, 2, 3, 4, 5, 6, 7];
+  const int COLUMN_BUTTONS[] = {1, 2, 3, 4, 5, 6, 7};
 
 #endif
