@@ -31,7 +31,7 @@
    *   - time when previous value was obtained
    */
   extern int columnButtons[3][COLUMNS];
-  extern int AIButton[3][0];
-  extern int startResetButton[3][0];
+  extern int AIButton[3];
+  extern int startResetButton[3];
 
 #endif

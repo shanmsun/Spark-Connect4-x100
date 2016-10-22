@@ -3,7 +3,6 @@
 #include "connect_4_check_win.h"
 #include "Arduino.h"
 
-int BUTTON_pin[1][COLUMNS];
   /*
   * This function checks if a mechanical switch has been activated. The time constant, 'DEBOUNCE_DELAY'
   * avoids activated a false signal due to bouncing in the switch
@@ -24,6 +23,18 @@ int BUTTON_pin[1][COLUMNS];
   }
 
   /*
+   * Instantiates the initial state of the switch (think of an RC capacitor)
+   */
+  void initializeButton(int *buttonObject, int pinID){
+    buttonObject[0] = pinID;
+    buttonObject[1] = HIGH;
+    buttonObject[2] = (int) millis();
+
+    //note: default value is HIGH because of the INPUT_PULLUP state
+    pinMode(pinID, INPUT_PULLUP);
+  }
+
+  /*
    * Swaps the current user
    */
   void switchUser(int *currentPlayer){
@@ -40,11 +51,11 @@ int BUTTON_pin[1][COLUMNS];
    */
   void displayTurn(int currentPlayer){
 	  if (currentPlayer == WHITE){
-  	  digitalWrite(PLAYER_W_INDICATOR, HIGH);
-  	  digitalWrite(PLAYER_G_INDICATOR, LOW);
+  	  digitalWrite(PLAYER_W_INDICATOR_PIN, HIGH);
+  	  digitalWrite(PLAYER_G_INDICATOR_PIN, LOW);
 	  } else{
-		  digitalWrite(PLAYER_G_INDICATOR, HIGH);
-		  digitalWrite(PLAYER_W_INDICATOR, LOW);
+		  digitalWrite(PLAYER_G_INDICATOR_PIN, HIGH);
+		  digitalWrite(PLAYER_W_INDICATOR_PIN, LOW);
 	  }
   }
 
@@ -108,16 +119,19 @@ int BUTTON_pin[1][COLUMNS];
     Serial.println("All tiles set to no colour.");
   }
 
+  /*
+   * Sets up the pin configurations and resets the tile
+   */
   void setupGame(Tile tileArray[][COLUMNS]){
 	  for (int col = 0; col < COLUMNS; col++){
-      columnButtons[0][col] = COLUMN_BUTTONS[col];
-      columnButtons[1][col] = (int) millis();
-      columnButtons[2][col] = HIGH;
-
-		  pinMode(COLUMN_BUTTONS[col], INPUT_PULLUP);
+      initializeButton(columnButtons[col], COLUMN_BUTTON_PINS[col]);
 	  }
-	  pinMode(PLAYER_G_INDICATOR, OUTPUT);
-	  pinMode(PLAYER_W_INDICATOR, OUTPUT);
+
+    initializeButton(AIButton, AI_BUTTON_PIN);
+    initializeButton(startResetButton, START_RESET_BUTTON);
+
+	  pinMode(PLAYER_G_INDICATOR_PIN, OUTPUT);
+	  pinMode(PLAYER_W_INDICATOR_PIN, OUTPUT);
 	  resetGame(tileArray);
   }
 
@@ -126,10 +140,11 @@ int BUTTON_pin[1][COLUMNS];
     int player = WHITE;
 	  int winner = NO_COLOUR;
     int TilePlacement;
+    bool isReset = false;
 
 	  Serial.println("Start new Connect 4 game...");
 
-	  while (winner == NO_COLOUR){
+	  while (winner == NO_COLOUR || isReset){
 		  int isPlaced = 0;
 		  switchUser(&player);
 		  displayTurn(player);
@@ -137,8 +152,9 @@ int BUTTON_pin[1][COLUMNS];
 		  Serial.println("Turn displayed...");
 		  Serial.println("Please place a tile...");
 
-		  while (!isPlaced){
+		  while (!isPlaced || isReset ){
 			  TilePlacement = waitTillTilePlacemant();
+        isReset = switchToggled(startResetButton[0], &startResetButton[1], &startResetButton[2]);
 			  Serial.println("Placing the tile...");
 			  isPlaced = placeDisc(player, TilePlacement, tileArray);
 		  }
@@ -149,5 +165,7 @@ int BUTTON_pin[1][COLUMNS];
 		  winner = checkBoard(player);
 	  }
 
-	  waitAndDisplayWinner(winner, tileArray);
+    if(!isReset){
+      waitAndDisplayWinner(winner, tileArray);
+    }
   }

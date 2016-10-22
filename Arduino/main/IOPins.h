@@ -14,14 +14,14 @@
   const int NUM_MAXIMS_PER_COLOUR = 1;
 
   // turn indicator pins
-  const int PLAYER_G_INDICATOR = 0;     //Change to actual pin on arduino
-  const int PLAYER_W_INDICATOR = 1;   //Change to actual pin on arduino
+  const int PLAYER_G_INDICATOR_PIN = 0;     //Change to actual pin on arduino
+  const int PLAYER_W_INDICATOR_PIN = 1;   //Change to actual pin on arduino
 
   // toggle/feature button
   const int START_RESET_BUTTON = 4;
-  const int AI_BUTTON = 3;
+  const int AI_BUTTON_PIN = 3;
 
   // column buttons
-  const int COLUMN_BUTTONS[] = {1, 2, 3, 4, 5, 6, 7};
+  const int COLUMN_BUTTON_PINS[] = {1, 2, 3, 4, 5, 6, 7};
 
 #endif
