@@ -30,11 +30,11 @@ int TURN = WHITE;
 	  	  }
   }
 
-  int placeDisc(int col){
+  int placeDisc(int col, Tile tileArray[][COLUMNS]){
 	  for(int row = 0; row < ROWS; row++){
 		  if (BOARD[row][col] == NO_COLOUR){
 			  BOARD[row][col] = TURN;
-			  Tile tile = TILES_ARRAY[row][col];
+			  Tile tile = tileArray[row][col];
 			  tile.setColour(TURN);
 			  return 1;
 		  }
@@ -43,13 +43,13 @@ int TURN = WHITE;
 	  return 0; //column full, try again
   }
 
-  void waitAndDisplayWinner(){
+  void waitAndDisplayWinner(Tile tileArray[][COLUMNS]){
 	  int val = LOW;                                   //Change according to button
 	  //Display all tiles in winning colour
 	  Serial.println("Displaying winner......");
 	  for(int row = ROWS; row >0; row--){
 		  for(int col = 0; col < COLUMNS; col++){
-	  	  		Tile tile = TILES_ARRAY[row][col];
+	  	  		Tile tile = tileArray[row][col];
 	  	  		tile.setColour(d);
 	  	  	}
 	  }
@@ -57,7 +57,7 @@ int TURN = WHITE;
 	  for(int row = ROWS; row >0; row--){
 
 		  for(int col = 0; col < COLUMNS; col++){
-		  	  	Tile tile = TILES_ARRAY[row][col];
+		  	  	Tile tile = tileArray[row][col];
 		  	  	tile.setColour(BOARD[row][col]);
 		  }
 	  }
@@ -80,11 +80,11 @@ int TURN = WHITE;
 	  return col;
   }
 
-  void resetGame(){
+  void resetGame(Tile tileArray[][COLUMNS]){
     Serial.println("Resetting......");
     for(int row = 0; row < ROWS; row++){
           for(int col = 0; col < COLUMNS; col++){
-            Tile tile = TILES_ARRAY[row][col];
+            Tile tile = tileArray[row][col];
             tile.setColour(NO_COLOUR);
             BOARD[row][col] = NO_COLOUR;
           }
@@ -92,23 +92,23 @@ int TURN = WHITE;
     Serial.println("All tiles set to no colour.");
   }
 
-  void setupGame(){
+  void setupGame(Tile tileArray[][COLUMNS]){
 	  for (int col = 0; col < COLUMNS; col++){
 		  BUTTON_pin[1][col] = col;                      //Change to actual pin on arduino
 		  pinMode(BUTTON_pin[1][col], INPUT);
 	  }
 	  pinMode(PLAYER_G_INDICATOR, OUTPUT);
 	  pinMode(PLAYER_W_INDICATOR, OUTPUT);
-	  resetGame();
+	  resetGame(tileArray);
   }
 
-  void runGame(){
+  void runGame(Tile tileArray[][COLUMNS]){
 
 	  while(ERROR == 0){
-		  resetGame();
+		  resetGame(tileArray);
 		  int winner = NO_COLOUR;
 		  Serial.println("Start new Connect 4 game...");
-		  resetGame();
+		  resetGame(tileArray);
 		  while (winner == NO_COLOUR){
 			  int placed = 0;
 			  switchUser();
@@ -122,7 +122,7 @@ int TURN = WHITE;
 
 				  Serial.println("Placing the tile...");
 
-				  placed = placeDisc(TilePlacement);
+				  placed = placeDisc(TilePlacement, tileArray);
 			  }
 
 			  Serial.println("Tile placed...");
@@ -131,7 +131,7 @@ int TURN = WHITE;
 			  winner = checkBoard();
 		  }
 
-		  waitAndDisplayWinner();
+		  waitAndDisplayWinner(tileArray);
 	  }
 
   }
