@@ -5,8 +5,6 @@
 
 int BUTTON_pin[1][COLUMNS];
 int d = WHITE;
-int ON = 1;
-int OFF = 0;
 int TilePlacement;
 int ERROR = 0;
 int BOARD[ROWS][COLUMNS];
@@ -23,12 +21,12 @@ int TURN = WHITE;
 
   void displayTurn(){
 	  if (d == WHITE){
-		  	  digitalWrite(PLAYER_W_INDICATOR, ON);
-		  	  digitalWrite(PLAYER_G_INDICATOR, OFF);
+		  	  digitalWrite(PLAYER_W_INDICATOR, HIGH);
+		  	  digitalWrite(PLAYER_G_INDICATOR, LOW);
 	  	  }
 	  	  else{
-	  		  digitalWrite(PLAYER_G_INDICATOR, ON);
-	  		  digitalWrite(PLAYER_W_INDICATOR, OFF);
+	  		  digitalWrite(PLAYER_G_INDICATOR, HIGH);
+	  		  digitalWrite(PLAYER_W_INDICATOR, LOW);
 	  	  }
   }
 
