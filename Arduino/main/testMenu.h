@@ -4,7 +4,8 @@
   void printTestMenu();
   void parseResponse();
   void testBoard();
-  void testRow();
-  void testColumn();
+  void testRow(int row);
+  void testColumn(int column);
+  void testTile(int row, int column);
   
 #endif
