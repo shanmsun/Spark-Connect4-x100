@@ -23,5 +23,8 @@
   const int G_CLOCK_PIN = 3;
 
   const int NUM_MAXIMS_PER_COLOUR = 1;
+
+  const int PLAYER_G_INDICATOR = 0;     //Change to actual pin on arduino
+  const int PLAYER_W_INDICATOR = 1;   //Change to actual pin on arduino
   
 #endif
