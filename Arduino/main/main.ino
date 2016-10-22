@@ -12,6 +12,8 @@ LedControl greenMaxim = LedControl(G_DATA_PIN, G_CLOCK_PIN, G_CS_PIN, NUM_MAXIMS
 
 void setup() {
   // put your setup code here, to run once:
+
+  //this is a test comment
   if(Serial){
     Serial.begin(9600);
     runTestMenu();
