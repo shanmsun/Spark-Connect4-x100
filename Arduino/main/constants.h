@@ -1,4 +1,5 @@
 #include "tile.h"
+#include "IOPins.h"
 #include "LedControl.h"
 
 #ifndef CONSTANTS_H
@@ -15,28 +16,22 @@
   const int GREEN = 1;
   const int WHITE = 2;
 
+  // debounce delay (ms)
+  const int DEBOUCE_DELAY = 250;
+
   // external variables that will need to be shared
   extern Tile TILES_ARRAY[ROWS][COLUMNS];
   extern LedControl whiteMaxim;
   extern LedControl greenMaxim;
 
-  // MAXIM pin configuraitons
-  const int W_DATA_PIN = 12;
-  const int W_CS_PIN = 11;
-  const int W_CLOCK_PIN = 10;
-
-  const int G_DATA_PIN = 5;
-  const int G_CS_PIN = 4;
-  const int G_CLOCK_PIN = 3;
-
-  const int NUM_MAXIMS_PER_COLOUR = 1;
-
-  // turn indicator pins
-  const int PLAYER_G_INDICATOR = 0;     //Change to actual pin on arduino
-  const int PLAYER_W_INDICATOR = 1;   //Change to actual pin on arduino
-
-  // toggle/feature button
-  const int START_RESET_BUTTON = 4;
-  const int AI_BUTTON = 3;
+  /*  a multiarray that stores the button values due to debouncing issues
+   *  each column contains (in order from top-0 to bottom-2):
+   *   - assigned pin
+   *   - previous value
+   *   - time when previous value was obtained
+   */
+  extern int columnButtons[3][COLUMNS];
+  extern int AIButton[3];
+  extern int startResetButton[3];
 
 #endif
