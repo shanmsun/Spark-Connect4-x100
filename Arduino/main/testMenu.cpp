@@ -45,17 +45,21 @@ void printTestMenu(){
   Serial.println("---------------------------------------------");
 }
 
+int readInt(){
+  while(Serial.available() <= 0){
+  }
+
+  return Serial.parseInt(); 
+}
+
 /*
  * Parses the option the user selects. The number associated to the menu option 
  * are based on the order in which the options are in the array 
  */
 void parseResponse(){ 
   Serial.print("> ");
-  
-  while(Serial.available() <= 0){
-  }
 
-  option = Serial.parseInt();
+  option = readInt();
   Serial.println((int) option);
   switch ((int) option){
     case 0:
@@ -67,21 +71,31 @@ void parseResponse(){
       break;
     case 2:{
       Serial.println("Testing row...");
-      int row = Serial.parseInt();
+      Serial.print("Row > ");
+      int row = readInt();
       
-      Serial.println((int)row);
+      Serial.println(row);
       testRow(row);}
       break;
     case 3:{
       Serial.println("Testing col...");
-      int col = Serial.parseInt();
+      Serial.print("Col > ");
+      int col = readInt();
+
+      Serial.println(col);
       testColumn(col);
     }
       break;
     case 4:{
       Serial.println("Testing individual tile...");
-      int row = Serial.parseInt();
-      int col = Serial.parseInt();
+      Serial.print("Row > ");
+      int row = readInt();
+      Serial.println(row);
+      
+      Serial.print("Col > ");
+      int col = readInt();
+      Serial.println(col);
+     
       testTile(row, col);}
       break;
     case 5:
