@@ -4,7 +4,7 @@
 #include "Arduino.h"
   
   //This matrix saves a copy of the connect 4 game board
-  int Board[ROWS][COLUMNS};
+  int Board[ROWS][COLUMNS];
   
   /*
   * This function checks if a mechanical switch has been activated. The time constant, 'DEBOUNCE_DELAY'
@@ -70,7 +70,7 @@
 	  for(int row = 0; row < ROWS; row++){
 		  if (tileArray[row][col].getColour() == NO_COLOUR){
 			  tileArray[row][col].setColour(currentPlayer);
-        Board[row][col] = curentPlayer;
+        Board[row][col] = currentPlayer;
 			  return 1;
 		  }
 	  }
