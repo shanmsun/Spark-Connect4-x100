@@ -8,6 +8,13 @@ The display is a giagantic and electronic version of Connect 4. Instead of physi
 This display will be built over the weekend and be completed within 2 weekend session (~10 hours). In this workshop, the exec team and volunteers/passion individual will stop by and race to build this display! The aim is to get the display out by October 23rd.   
 
 ## Code
+
+> Issues/Important Info:
+> - the row is configured to be based of the 4th quadrant (i.e. SE) in the X-Y plane; the bottom right would be 6, 7 (not zero-indexed)
+> - on the MAXIM, the wiring is not zero-indexed; as a result, everything that is zero-index has to be shifted by 1
+> - in addition, one of the segments was missed (A-B-C-E-F-G); anything past C needs to get get shifted by 2;
+> - the above points have been fixed with a helper library. 
+
 The code can be divided up into lots of chunks. Here is a basic breakdown
 ```c
  - constants.h = Shares any constants/flags and external variables that will need to be shared across the entire code
