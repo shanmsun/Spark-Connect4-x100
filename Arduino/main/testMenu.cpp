@@ -14,8 +14,15 @@ char* testMenuOptions[] = {
   "Read Start/Reset Switch",
   "Read AI Switch",
   "Turn on indicator for white",
-  "Turn on indicator for green"
+  "Turn on indicator for green",
+  "Layout"
 };
+
+String rowPrompt = "Row (Zero-indexed)> ";
+String colPrompt = "Col (Zero-indexed)> ";
+//
+String colConfig ="0 1 2 3 4 5 6\n";
+String rowConfig ="1\n2\n3\n4\n5";
 
 int option = -1;
 
@@ -37,7 +44,7 @@ void runTestMenu(){
  */
 void printTestMenu(){
   Serial.println("----------Connect 4 x100 Boot Menu-----------");
-  for(int i=0; i<10; i++){
+  for(int i=0; i<11; i++){
     char option[100]; 
     sprintf(option, "%i - %s", i, testMenuOptions[i]);
     Serial.println(option);
@@ -71,7 +78,7 @@ void parseResponse(){
       break;
     case 2:{
       Serial.println("Testing row...");
-      Serial.print("Row > ");
+      Serial.print(rowPrompt);
       int row = readInt();
       
       Serial.println(row);
@@ -79,7 +86,7 @@ void parseResponse(){
       break;
     case 3:{
       Serial.println("Testing col...");
-      Serial.print("Col > ");
+      Serial.print(colPrompt);
       int col = readInt();
 
       Serial.println(col);
@@ -88,11 +95,11 @@ void parseResponse(){
       break;
     case 4:{
       Serial.println("Testing individual tile...");
-      Serial.print("Row > ");
+      Serial.print(rowPrompt);
       int row = readInt();
       Serial.println(row);
       
-      Serial.print("Col > ");
+      Serial.print(colPrompt);
       int col = readInt();
       Serial.println(col);
      
@@ -118,11 +125,20 @@ void parseResponse(){
       Serial.println("Testing green indicator...");
       turnOnGreen();
       break;
+    case 10:
+      printHelp();
+      break;
     default:
       Serial.println("Invalid option entered");
       break;
   }
   Serial.println("Done");
+}
+
+void printHelp(){
+  Serial.println("Configuration of board: ");
+  Serial.print(colConfig);
+  Serial.print(rowConfig);
 }
 
 void testBoard(){

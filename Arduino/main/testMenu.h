@@ -1,5 +1,6 @@
 #ifndef TESTMENU_H
 #define TESTMENU_H
+  void printHelp();
   void runTestMenu();
   void printTestMenu();
   void parseResponse();

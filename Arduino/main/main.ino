@@ -13,7 +13,6 @@ LedControl greenMaxim = LedControl(G_DATA_PIN, G_CS_PIN, G_CLOCK_PIN, NUM_MAXIMS
 void setup() {
   for(int row = 0; row < ROWS; row++){
     for(int col= 0; col < COLUMNS; col++){
-
       //segment was wired from A-B-C-E-F (D is missing...)
       if(row >= 3){
         TILES_ARRAY[row][col].setCoordinates(row+2, col+1); 
