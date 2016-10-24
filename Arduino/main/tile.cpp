@@ -20,16 +20,23 @@ void Tile::setColour(int colour){
   bool isGreen = false;
   bool isWhite = false;
 
+  char status[100]; 
+  sprintf(status, "Row: %d - Col :%d", m_row, m_column);
+  Serial.println(status);
+
   if (colour == GREEN){
     isGreen = true;
+    Serial.print("Green - ");
   } else if (colour == WHITE){
     isWhite = true;
+    Serial.print("White - ");
   }
 
   m_colour = colour;
 
-  whiteMaxim.setLed(0, m_row, m_column, isWhite);
-  greenMaxim.setLed(0, m_row, m_column, isGreen);
+  // transposed because the dig and segs are transposed; 
+  whiteMaxim.setLed(0, m_column, m_row, isWhite);
+  greenMaxim.setLed(0, m_column, m_row, isGreen);
 
   return;
 }

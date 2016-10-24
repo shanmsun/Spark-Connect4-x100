@@ -3,13 +3,13 @@
   // pin configurations for the different inputs/outpus
 
   // MAXIM pin configuraitons
-  const int W_DATA_PIN = 12;
-  const int W_CS_PIN = 11;
-  const int W_CLOCK_PIN = 10;
+  const int W_DATA_PIN = 34;
+  const int W_CS_PIN = 38;
+  const int W_CLOCK_PIN = 36;
 
-  const int G_DATA_PIN = 5;
-  const int G_CS_PIN = 4;
-  const int G_CLOCK_PIN = 3;
+  const int G_DATA_PIN = 35;
+  const int G_CS_PIN = 39;
+  const int G_CLOCK_PIN = 37;
 
   const int NUM_MAXIMS_PER_COLOUR = 1;
 

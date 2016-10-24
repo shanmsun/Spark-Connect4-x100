@@ -144,6 +144,9 @@ void testColumn(int column){
 }
 
 void testTile(int row, int col){
+  Serial.print(row);
+  Serial.print(col);
+  
   Tile tile = TILES_ARRAY[row][col];
   tile.setColour(WHITE);
   delay(500);
@@ -151,6 +154,7 @@ void testTile(int row, int col){
   delay(500);
   tile.setColour(GREEN);
   delay(500);
+  Serial.println();
 }
 
 int testSwitch(int *buttonObj){
