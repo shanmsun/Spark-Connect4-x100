@@ -2,7 +2,10 @@
 #include "constants.h"
 #include "connect_4_check_win.h"
 #include "Arduino.h"
-
+  
+  //This matrix saves a copy of the connect 4 game board
+  int Board[ROWS][COLUMNS];
+  
   /*
   * This function checks if a mechanical switch has been activated. The time constant, 'DEBOUNCE_DELAY'
   * avoids activated a false signal due to bouncing in the switch
@@ -16,9 +19,10 @@
     }
 
     if(*lastValue != currentValue){
-      *lastValue = currentValue;
+      // inverted because it's pulled HIGH by default
+      *lastValue = !currentValue;
       *lastActivated = now;
-      return currentValue;
+      return !currentValue;
     }
   }
 
@@ -66,6 +70,7 @@
 	  for(int row = 0; row < ROWS; row++){
 		  if (tileArray[row][col].getColour() == NO_COLOUR){
 			  tileArray[row][col].setColour(currentPlayer);
+        Board[row][col] = currentPlayer;
 			  return 1;
 		  }
 	  }
@@ -87,6 +92,12 @@
 	  	  	}
 	  }
 	  delay(5000);
+    for(int row = 0; row >ROWS; row++){
+      for(int col = 0; col < COLUMNS; col++){
+            Tile tile = tileArray[row][col];
+            tile.setColour(Board[row][col]);
+          }
+    }
 	  Serial.println("Wait until restarted");
   }
 
@@ -101,7 +112,7 @@
 			  col = -1;
 		  }
 		  col += 1;
-		  val = switchToggled(columnButtons[0][col], &columnButtons[1][col], &columnButtons[2][col]);
+		  val = switchToggled(columnButtons[col][0], &columnButtons[col][1], &columnButtons[col][2]);
 	  }
 	  return col;
   }
@@ -114,6 +125,7 @@
     for(int row = 0; row < ROWS; row++){
           for(int col = 0; col < COLUMNS; col++){
             tileArray[row][col].setColour(NO_COLOUR);
+            Board[row][col] = NO_COLOUR;
           }
         }
     Serial.println("All tiles set to no colour.");
