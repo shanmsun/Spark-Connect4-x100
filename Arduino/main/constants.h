@@ -17,7 +17,7 @@
   const int WHITE = 2;
 
   // debounce delay (ms)
-  const int DEBOUCE_DELAY = 250;
+  const int DEBOUCE_DELAY = 500;
 
   // external variables that will need to be shared
   extern Tile TILES_ARRAY[ROWS][COLUMNS];

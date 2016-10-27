@@ -35,6 +35,7 @@
     buttonObject[2] = (int) millis();
 
     //note: default value is HIGH because of the INPUT_PULLUP state
+    Serial.print(pinID);
     pinMode(pinID, INPUT_PULLUP);
   }
 
@@ -136,6 +137,7 @@
    */
   void setupGame(Tile tileArray[][COLUMNS]){
 	  for (int col = 0; col < COLUMNS; col++){
+      Serial.println("Initializing buttons...");
       initializeButton(columnButtons[col], COLUMN_BUTTON_PINS[col]);
 	  }
 

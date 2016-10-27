@@ -165,11 +165,11 @@ void testTile(int row, int col){
   
   Tile tile = TILES_ARRAY[row][col];
   tile.setColour(WHITE);
-  delay(500);
+  delay(200);
   tile.setColour(NO_COLOUR);
-  delay(500);
+  delay(200);
   tile.setColour(GREEN);
-  delay(500);
+  delay(200);
   Serial.println();
 }
 
