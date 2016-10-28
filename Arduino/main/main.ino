@@ -7,7 +7,7 @@ int columnButtons[COLUMNS][3];
 int AIButton[3];
 int startResetButton[3];
 
-LedControl whiteMaxim = LedControl(W_DATA_PIN, W_CS_PIN, W_CLOCK_PIN, NUM_MACIMS_PER_COLOUR);
+LedControl whiteMaxim = LedControl(W_DATA_PIN, W_CS_PIN, W_CLOCK_PIN, NUM_MAXIMS_PER_COLOUR);
 LedControl greenMaxim = LedControl(G_DATA_PIN, G_CS_PIN, G_CLOCK_PIN, NUM_MAXIMS_PER_COLOUR);
 
 void setup() {
@@ -32,17 +32,19 @@ void setup() {
   greenMaxim.setIntensity(0, 15);
   
   // put your setup code here, to run once:
+  setupGame(TILES_ARRAY); //set up board for Connect 4 game
 
   //this is a test comment
   if(Serial){
     Serial.begin(115200);
-      setupGame(TILES_ARRAY); //set up board for Connect 4 game
+    //the following line should be moved to before the loop is executed
+    //otherwise pins will not be set correctly unless serial port
+    //is available
     runTestMenu();
   }
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-
-//	runGame(TILES_ARRAY);
+	runGame(TILES_ARRAY);
 }

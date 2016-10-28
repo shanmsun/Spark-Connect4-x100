@@ -14,16 +14,19 @@
     int now = millis();
     int currentValue = digitalRead(switchPin) == HIGH ? 1 : 0;
 
-    if( (now - *lastActivated) < DEBOUCE_DELAY){
+    if( (now - *lastActivated) < DEBOUNCE_DELAY){
       return false;
     }
 
     if(*lastValue != currentValue){
       // inverted because it's pulled HIGH by default
-      *lastValue = !currentValue;
+      *lastValue = currentValue;
       *lastActivated = now;
-      return !currentValue;
-    }
+      return currentValue;
+    } 
+//      else {
+//      return false; 
+//    }
   }
 
   /*
@@ -68,14 +71,14 @@
    * Places the disc in the column the user selected
    */
   int placeDisc(int currentPlayer, int col, Tile tileArray[][COLUMNS]){
-	  for(int row = 0; row < ROWS; row++){
+	  for(int row = ROWS-1; row >= 0; row--){
 		  if (tileArray[row][col].getColour() == NO_COLOUR){
 			  tileArray[row][col].setColour(currentPlayer);
         Board[row][col] = currentPlayer;
 			  return 1;
 		  }
 	  }
-	  Serial.println("Try again column full");
+	  Serial.println("\tTry again column full");
 	  return ERROR; //column full, try again
   }
 
@@ -106,14 +109,16 @@
    * Infinite-loop program that does not exit until the user selects a tile
    */
   int waitTillTilePlacemant(){
-	  int val = LOW;                                   //Change according to button
-	  int col = -1;
-	  while(val != HIGH){
-		  if (col >= COLUMNS){
-			  col = -1;
-		  }
-		  col += 1;
-		  val = switchToggled(columnButtons[col][0], &columnButtons[col][1], &columnButtons[col][2]);
+	  bool val = false; //Change according to button
+	  int col;
+	  while(!val){
+      for (col =0; col< COLUMNS; col++){
+        val = switchToggled(columnButtons[col][0], &columnButtons[col][1], &columnButtons[col][2]);
+        if (val) {
+          break;
+        }
+        delay(10);  
+      }
 	  }
 	  return col;
   }
@@ -142,7 +147,7 @@
 	  }
 
     initializeButton(AIButton, AI_BUTTON_PIN);
-    initializeButton(startResetButton, START_RESET_BUTTON);
+    initializeButton(startResetButton, START_RESET_BUTTON_PIN);
 
 	  pinMode(PLAYER_G_INDICATOR_PIN, OUTPUT);
 	  pinMode(PLAYER_W_INDICATOR_PIN, OUTPUT);
@@ -150,36 +155,48 @@
   }
 
   void runGame(Tile tileArray[][COLUMNS]){
+    START:
     resetGame(tileArray);
     int player = WHITE;
 	  int winner = NO_COLOUR;
     int TilePlacement;
     bool isReset = false;
+    int lastPlayed; 
 
 	  Serial.println("Start new Connect 4 game...");
 
-	  while (winner == NO_COLOUR || isReset){
+	  while (winner == NO_COLOUR){
 		  int isPlaced = 0;
-		  switchUser(&player);
 		  displayTurn(player);
+      Serial.print("Current player: ");
+      Serial.println(player);
 
-		  Serial.println("Turn displayed...");
-		  Serial.println("Please place a tile...");
+		  Serial.println("\tPlease place a tile...");
 
-		  while (!isPlaced || isReset ){
+		  while (!isPlaced && !isReset ){
 			  TilePlacement = waitTillTilePlacemant();
         isReset = switchToggled(startResetButton[0], &startResetButton[1], &startResetButton[2]);
-			  Serial.println("Placing the tile...");
+        if (isReset)
+          goto START;
+			  Serial.println("\tPlacing the tile...");
 			  isPlaced = placeDisc(player, TilePlacement, tileArray);
+        delay(1000);
 		  }
 
-		  Serial.println("Tile placed...");
-		  Serial.println("Checking win...");
+		  Serial.println("\tTile placed...");
+		  Serial.println("\tChecking win...");
 
 		  winner = checkBoard(player);
+      switchUser(&player);
+      delay(500);
 	  }
 
     if(!isReset){
       waitAndDisplayWinner(winner, tileArray);
     }
   }
+
+  void easterEgg(){
+    //what is a cool easter egg? 
+  }
+

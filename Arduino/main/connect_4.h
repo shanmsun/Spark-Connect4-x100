@@ -19,4 +19,5 @@
   void waitAndDisplayWinner(int currentPlayer, Tile tileArray[][COLUMNS]);
   void switchUser(int *currentPlayer);
   int placeDisc(int col, Tile tileArray[][COLUMNS]);
+  void easterEgg();
 #endif /* CONNECT_4_H_ */

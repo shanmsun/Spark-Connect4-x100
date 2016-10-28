@@ -180,7 +180,7 @@ int testSwitch(int *buttonObj){
 void testSwitchResult(bool isMultiple, bool isReset){
   Serial.println("This will print out when the switch transitioned from 0->1 over the span of 10 seconds");
 
-  unsigned long endTime = millis() + 10000;
+  unsigned long endTime = millis() + 20000;
   while( millis() < endTime){
 
     int result[] = {0, 0, 0, 0, 0, 0, 0};

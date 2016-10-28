@@ -18,12 +18,10 @@
   const int PLAYER_W_INDICATOR_PIN = 53;   //Change to actual pin on arduino
 
   // toggle/feature button
-  const int START_RESET_BUTTON = 12;
+  const int START_RESET_BUTTON_PIN = 12;
   const int AI_BUTTON_PIN = 3;
 
   // column buttons
   const int COLUMN_BUTTON_PINS[] = {22, 24, 26, 28, 30, 32, 34};
-// const int COLUMN_BUTTON_PINS[] = {17, 19, 21, 23, 25, 27, 29};
-
 
 #endif
