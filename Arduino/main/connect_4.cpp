@@ -10,23 +10,26 @@
   * This function checks if a mechanical switch has been activated. The time constant, 'DEBOUNCE_DELAY'
   * avoids activated a false signal due to bouncing in the switch
   */
-  bool switchToggled(int switchPin, int* lastValue, int* lastActivated){
-    int now = millis();
+  bool switchToggled(int switchPin, int *lastValue, int *lastActivated){
+    int now = (int) millis();
     int currentValue = digitalRead(switchPin) == HIGH ? 1 : 0;
 
+	// time interval too small, don't check 
     if( (now - *lastActivated) < DEBOUNCE_DELAY){
       return false;
     }
 
-    if(*lastValue != currentValue){
+	// we only care if the button is being unpressed
+    if ((*lastValue == LOW) && (currentValue == HIGH)){
       // inverted because it's pulled HIGH by default
       *lastValue = currentValue;
       *lastActivated = now;
-      return currentValue;
-    } 
-//      else {
-//      return false; 
-//    }
+      return true;
+    }
+	
+	// either button is being pressed or nothing happened. Save the value in lastValue
+	*lastValue = currentValue;
+	return false;
   }
 
   /*
@@ -106,24 +109,6 @@
   }
 
   /*
-   * Infinite-loop program that does not exit until the user selects a tile
-   */
-  int waitTillTilePlacemant(){
-	  bool val = false; //Change according to button
-	  int col;
-	  while(!val){
-      for (col =0; col< COLUMNS; col++){
-        val = switchToggled(columnButtons[col][0], &columnButtons[col][1], &columnButtons[col][2]);
-        if (val) {
-          break;
-        }
-        delay(10);  
-      }
-	  }
-	  return col;
-  }
-
-  /*
    * Resets the game
    */
   void resetGame(Tile tileArray[][COLUMNS]){
@@ -155,45 +140,59 @@
   }
 
   void runGame(Tile tileArray[][COLUMNS]){
+	// define some variables
+    int player, winner, lastPlayed, col, isPlaced;
+	// begin the game
     START:
+	// reset board
     resetGame(tileArray);
-    int player = WHITE;
-	  int winner = NO_COLOUR;
-    int TilePlacement;
-    bool isReset = false;
-    int lastPlayed; 
+	player = WHITE;
+	winner = NO_COLOUR;
+	
+	Serial.println("Start new Connect 4 game...");
 
-	  Serial.println("Start new Connect 4 game...");
-
-	  while (winner == NO_COLOUR){
-		  int isPlaced = 0;
-		  displayTurn(player);
+	// while there is no winner, loop
+	while (winner == NO_COLOUR){
+	  // no button has been pressed
+	  isPlaced = 0;
+	  // display which player's turn it is
+	  displayTurn(player);
       Serial.print("Current player: ");
       Serial.println(player);
 
-		  Serial.println("\tPlease place a tile...");
-
-		  while (!isPlaced && !isReset ){
-			  TilePlacement = waitTillTilePlacemant();
-        isReset = switchToggled(startResetButton[0], &startResetButton[1], &startResetButton[2]);
-        if (isReset)
-          goto START;
-			  Serial.println("\tPlacing the tile...");
-			  isPlaced = placeDisc(player, TilePlacement, tileArray);
-        delay(1000);
-		  }
-
-		  Serial.println("\tTile placed...");
-		  Serial.println("\tChecking win...");
-
-		  winner = checkBoard(player);
+	  Serial.println("\tPlease place a tile...");
+      // poll all buttons until one is pressed
+	  while (!isPlaced){
+		// check the reset button. If pressed, return to beginning of function
+		if (switchToggled(startResetButton[0], &startResetButton[1], &startResetButton[2])) {
+			goto START;
+		}
+		// otherwise sweep the column buttons once
+		for (col = 0; col < COLUMNS; col++) {
+			// if button pressed, place the tile
+			if (switchToggled(columnButtons[col][0], &columnButtons[col][1], &columnButtons[col][2])) {
+				Serial.println("\tPlacing the tile...");
+				// if the column is full, isPlaced will be 0, we won't exit the inner while loop, and it'll
+				// still be this player's turn
+				isPlaced = placeDisc(player, col, tileArray);
+				break; // break out of for loop
+			}
+			// reduces glitchiness
+	        delay(5);
+		} // for col       
+	  } // while !isPlaced
+	  
+	  // check for a win
+	  Serial.println("\tTile placed...");
+	  Serial.println("\tChecking win...");
+	  winner = checkBoard(player);
+	  
+	  // switch the player and go back to the main loop
       switchUser(&player);
-      delay(500);
-	  }
-
-    if(!isReset){
-      waitAndDisplayWinner(winner, tileArray);
-    }
+      delay(300);
+	} // while !winner
+	// display the winner and exit
+    waitAndDisplayWinner(winner, tileArray);
   }
 
   void easterEgg(){
