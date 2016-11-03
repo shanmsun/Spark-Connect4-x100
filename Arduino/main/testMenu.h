@@ -8,7 +8,7 @@
   void testRow(int row);
   void testColumn(int column);
   void testTile(int row, int column);
-  int testSwitch(int *buttonObj);
+  int testSwitch(unsigned long *buttonObj);
   void testSwitchResult(bool isMultiple, bool isReset);
   void turnOnGreen();
   void turnOnWhite();

@@ -3,12 +3,12 @@
 #include "constants.h"
 
 Tile::Tile(){
-  setColour(NO_COLOUR);
+  m_colour = NO_COLOUR;
   m_coord_is_set = false;
 }
 
 Tile::Tile(int colour){
-  setColour(colour);
+  m_colour = colour;
   m_coord_is_set = false;
 }
 
@@ -36,6 +36,7 @@ void Tile::setColour(int colour){
 
   // transposed because the dig and segs are transposed; 
   whiteMaxim.setLed(0, m_column, m_row, isWhite);
+  //delay(5);
   greenMaxim.setLed(0, m_column, m_row, isGreen);
 
   return;

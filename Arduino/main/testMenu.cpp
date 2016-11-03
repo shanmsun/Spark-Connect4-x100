@@ -173,7 +173,7 @@ void testTile(int row, int col){
   Serial.println();
 }
 
-int testSwitch(int *buttonObj){
+int testSwitch(unsigned long *buttonObj){
   return switchToggled(buttonObj[0], &buttonObj[1], &buttonObj[2]) ? 1 : 0;
 }
 
