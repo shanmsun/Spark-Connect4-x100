@@ -173,6 +173,7 @@
   }
 
   void playIntro(Tile tileArray[][COLUMNS]) {
+    return;
     Serial.println("Playing intro");
     while (true) {
       for (int r = 0; r < ROWS; r++) {
