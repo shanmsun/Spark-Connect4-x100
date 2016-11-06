@@ -6,6 +6,18 @@
 //This matrix saves a copy of the connect 4 game board
 int Board[ROWS][COLUMNS]; // I don't think we need this anymore.
 
+// TODO UNTESTED does this work, and if so, does it help?
+void resetMaxChips() {
+  whiteMaxim = LedControl(W_DATA_PIN, W_CS_PIN, W_CLOCK_PIN, NUM_MAXIMS_PER_COLOUR);
+  greenMaxim = LedControl(G_DATA_PIN, G_CS_PIN, G_CLOCK_PIN, NUM_MAXIMS_PER_COLOUR);
+  whiteMaxim.clearDisplay(0);
+  whiteMaxim.shutdown(0,false);
+  whiteMaxim.setIntensity(0, 15);
+  greenMaxim.clearDisplay(0);
+  greenMaxim.shutdown(0,false);
+  greenMaxim.setIntensity(0, 15);
+}
+
 /*
  * This function checks if a mechanical switch has been activated. The time
  * constant, 'DEBOUNCE_DELAY' avoids activated a false signal due to bouncing in
@@ -156,6 +168,19 @@ void resetGame(Tile tileArray[][COLUMNS]){
   Serial.println("All tiles set to no colour.");
 }
 
+// TODO Test if this version of resetGame helps the glitches
+//void resetGame(Tile tileArray[][COLUMNS]){
+//  Serial.println("Resetting......");
+//  resetMaxChips();
+//  for(int row = 0; row < ROWS; row++){
+//    for(int col = 0; col < COLUMNS; col++){
+//      tileArray[row][col].m_colour = NO_COLOUR;
+//      Board[row][col] = NO_COLOUR;
+//    }
+//  }
+//  Serial.println("All tiles set to no colour.");
+//}
+
 /*
  * Sets up the pin configurations and resets the tile
  */
@@ -173,29 +198,67 @@ void setupGame(Tile tileArray[][COLUMNS]){
   resetGame(tileArray);
 }
 
+// TODO UNTESTED: new arrow intro
 void playIntro(Tile tileArray[][COLUMNS]) {
-  return;
+  resetGame(tileArray);
+  
+  // Each point is {row, col}
+  // (0,0) is top left of display
+  // These are the points in an arrow
+  int pattern_pnts[][2] = {{1, 0}, {1, 1}, {1, 2}, {1, 3}, {1, 4}, {0, 5}, {1, 5}, {2, 5}, {1, 6}};
+  int num_pnts = sizeof(pattern_pnts) / sizeof(int[2]);
+  int total_delay = 500;
   Serial.println("Playing intro");
+
+  int i = 0;
+  int colour = WHITE;
   while (true) {
-    for (int r = 0; r < ROWS; r++) {
-      for (int c = COLUMNS-1; c >= 0; c--) {
-        if (r % 2 == 0) {
-          tileArray[r][c].setColour(GREEN);
-          tileArray[(r + 3) % ROWS][COLUMNS - 1 - c].setColour(WHITE);
-        } else {
-          tileArray[r][COLUMNS - 1 - c].setColour(GREEN);
-          tileArray[(r + 3) % ROWS][c].setColour(WHITE);
-        }
-        delay(100);
-        if (switchToggled(startResetButton[0], &startResetButton[1], &startResetButton[2])) {
-          Serial.println("Intro over");
-          return;
-        }
+    int row = pattern_pnts[i][0];
+    int col = pattern_pnts[i][1];
+    tileArray[row][col].setColour(colour);
+    ++i;
+    if (i >= num_pnts) {
+      i = 0;
+      colour = (colour == WHITE ? GREEN : WHITE);
+    }
+
+    // We can't just do delay(total_delay) because we might miss the reset button
+    // press. So we do a bunch of small delays, waking up periodically to check for
+    // a button press.
+    for (int t = 0; t < total_delay; t += 50) {
+      delay(50);
+      if (switchToggled(startResetButton[0], &startResetButton[1], &startResetButton[2])) {
+        Serial.println("Intro over");
+        return;
       }
     }
   }
 }
 
+//void playIntro(Tile tileArray[][COLUMNS]) {
+//  return;
+//  Serial.println("Playing intro");
+//  while (true) {
+//    for (int r = 0; r < ROWS; r++) {
+//      for (int c = COLUMNS-1; c >= 0; c--) {
+//        if (r % 2 == 0) {
+//          tileArray[r][c].setColour(GREEN);
+//          tileArray[(r + 3) % ROWS][COLUMNS - 1 - c].setColour(WHITE);
+//        } else {
+//          tileArray[r][COLUMNS - 1 - c].setColour(GREEN);
+//          tileArray[(r + 3) % ROWS][c].setColour(WHITE);
+//        }
+//        delay(100);
+//        if (switchToggled(startResetButton[0], &startResetButton[1], &startResetButton[2])) {
+//          Serial.println("Intro over");
+//          return;
+//        }
+//      }
+//    }
+//  }
+//}
+
+// TODO: Use this intro with very short delay to stress-test the display and try to cause glitches
 //  void playIntro(Tile tileArray[][COLUMNS]) {
 //    Serial.println("Playing intro");
 //    int len = 5;
@@ -241,6 +304,7 @@ void playIntro(Tile tileArray[][COLUMNS]) {
 //    Serial.println("Intro over");
 //  }
 
+// TODO UNTESTED: timeout on unclean board.
 int runGame(Tile tileArray[][COLUMNS]){
   resetGame(tileArray);
   int player = WHITE;
@@ -248,7 +312,6 @@ int runGame(Tile tileArray[][COLUMNS]){
   int TilePlacement;
   bool isReset = false;
   int winningCombo[4][2];
-  bool boardIsClean = true;
 
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 2; j++) {
@@ -272,13 +335,8 @@ int runGame(Tile tileArray[][COLUMNS]){
         return RESET;
       }
       if (TilePlacement == TIMEOUT) {
-        if (boardIsClean) {
-          return TIMEOUT;
-        }
-        // We don't want to time out of a game that's in progress!
-        continue;
+        return TIMEOUT;
       }
-      boardIsClean = false;
       Serial.println("Placing the tile...");
       isPlaced = placeDisc(player, TilePlacement, tileArray);
     }

@@ -25,7 +25,8 @@ const int GREEN = 1;
 const int WHITE = 2;
 
 // debounce delay (ms)
-const int DEBOUCE_DELAY = 200;
+// TODO UNTESTED increased debounce delay
+const int DEBOUCE_DELAY = 400;
 
 // How long to wait before timing out a blank game (ms)
 const unsigned long TIMEOUT_VALUE = 1000L * 60L;

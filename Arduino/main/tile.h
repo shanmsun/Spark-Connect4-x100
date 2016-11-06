@@ -5,7 +5,6 @@ private:
   bool m_coord_is_set;
   int m_row;
   int m_column;
-  int m_colour;
 
 public:
   Tile();
@@ -15,6 +14,8 @@ public:
   int getColumn();
   int getRow();
   int getColour();
+  
+  int m_colour;
 };
 
 #endif

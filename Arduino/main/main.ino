@@ -37,10 +37,6 @@ void setup() {
   greenMaxim.shutdown(0,false);
   greenMaxim.setIntensity(0, 15);
 
-  // put your setup code here, to run once:
-
-  //this is a test comment
-
   setupGame(TILES_ARRAY); //set up board for Connect 4 game
   playIntro(TILES_ARRAY);
 }
