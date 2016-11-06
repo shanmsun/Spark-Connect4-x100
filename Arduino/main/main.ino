@@ -11,6 +11,49 @@ LedControl whiteMaxim = LedControl(W_DATA_PIN, W_CS_PIN, W_CLOCK_PIN, NUM_MAXIMS
 LedControl greenMaxim = LedControl(G_DATA_PIN, G_CS_PIN, G_CLOCK_PIN, NUM_MAXIMS_PER_COLOUR);
 //MockMaxim whiteMaxim, greenMaxim;
 
+
+//void setup() {
+//  if(Serial){
+//    Serial.begin(115200);
+//    //runTestMenu();
+//  }
+//
+//  for(int row = 0; row < ROWS; row++){
+//    for(int col= 0; col < COLUMNS; col++){
+//      //segment was wired from A-B-C-E-F (D is missing...)
+//      if(row >= 3){
+//        TILES_ARRAY[row][col].setCoordinates(row+2, col+1);
+//      } else {
+//        TILES_ARRAY[row][col].setCoordinates(row+1, col+1);
+//      }
+//    }
+//  }
+//
+//  whiteMaxim.clearDisplay(0);
+//  whiteMaxim.shutdown(0,false);
+//  whiteMaxim.setIntensity(0, 15);
+//
+//
+//  greenMaxim.clearDisplay(0);
+//  greenMaxim.shutdown(0,false);
+//  greenMaxim.setIntensity(0, 15);
+//
+//  setupGame(TILES_ARRAY); //set up board for Connect 4 game
+//  //playIntro(TILES_ARRAY);
+//
+//    for(int row = 0; row < ROWS; row++){
+//    for(int col= 0; col < COLUMNS; col++){
+//      //segment was wired from A-B-C-E-F (D is missing...)
+//      TILES_ARRAY[row][col].setColour(GREEN);
+//      delay(100);
+//    }
+//  }
+//  delay(1000);
+//}
+
+//void loop() {
+//}
+
 void setup() {
   if(Serial){
     Serial.begin(115200);

@@ -6,7 +6,6 @@
 //This matrix saves a copy of the connect 4 game board
 int Board[ROWS][COLUMNS]; // I don't think we need this anymore.
 
-// TODO UNTESTED does this work, and if so, does it help?
 void resetMaxChips() {
   whiteMaxim = LedControl(W_DATA_PIN, W_CS_PIN, W_CLOCK_PIN, NUM_MAXIMS_PER_COLOUR);
   greenMaxim = LedControl(G_DATA_PIN, G_CS_PIN, G_CLOCK_PIN, NUM_MAXIMS_PER_COLOUR);
@@ -25,7 +24,7 @@ void resetMaxChips() {
  */
 bool switchToggled(unsigned long switchPin, unsigned long* lastValue, unsigned long* lastActivated){
   unsigned long now = millis();
-  int currentValue = digitalRead(switchPin) == HIGH ? 1 : 0;
+  int currentValue = digitalRead(switchPin) == HIGH ? 0 : 1;
 
   if( (now - *lastActivated) < DEBOUCE_DELAY){
     return false;
@@ -33,9 +32,9 @@ bool switchToggled(unsigned long switchPin, unsigned long* lastValue, unsigned l
 
   if(*lastValue != currentValue){
     // inverted because it's pulled HIGH by default
-    *lastValue = !currentValue;
+    *lastValue = currentValue;
     *lastActivated = now;
-    return !currentValue;
+    return currentValue;
   }
 
   return false;
@@ -51,7 +50,7 @@ void initializeButton(unsigned long *buttonObject, unsigned long pinID){
 
   //note: default value is HIGH because of the INPUT_PULLUP state
   Serial.print(pinID);
-  pinMode(pinID, INPUT_PULLUP); // TODO: pretty sure we have explicit pulldown resistors tho
+  pinMode(pinID, INPUT_PULLUP);
 }
 
 /*
@@ -157,29 +156,28 @@ int waitTillTilePlacemant(){
 /*
  * Resets the game
  */
-void resetGame(Tile tileArray[][COLUMNS]){
-  Serial.println("Resetting......");
-  for(int row = 0; row < ROWS; row++){
-    for(int col = 0; col < COLUMNS; col++){
-      tileArray[row][col].setColour(NO_COLOUR);
-      Board[row][col] = NO_COLOUR;
-    }
-  }
-  Serial.println("All tiles set to no colour.");
-}
-
-// TODO Test if this version of resetGame helps the glitches
 //void resetGame(Tile tileArray[][COLUMNS]){
 //  Serial.println("Resetting......");
-//  resetMaxChips();
 //  for(int row = 0; row < ROWS; row++){
 //    for(int col = 0; col < COLUMNS; col++){
-//      tileArray[row][col].m_colour = NO_COLOUR;
+//      tileArray[row][col].setColour(NO_COLOUR);
 //      Board[row][col] = NO_COLOUR;
 //    }
 //  }
 //  Serial.println("All tiles set to no colour.");
 //}
+
+void resetGame(Tile tileArray[][COLUMNS]){
+  Serial.println("Resetting......");
+  resetMaxChips();
+  for(int row = 0; row < ROWS; row++){
+    for(int col = 0; col < COLUMNS; col++){
+      tileArray[row][col].m_colour = NO_COLOUR;
+      Board[row][col] = NO_COLOUR;
+    }
+  }
+  Serial.println("All tiles set to no colour.");
+}
 
 /*
  * Sets up the pin configurations and resets the tile
@@ -198,16 +196,15 @@ void setupGame(Tile tileArray[][COLUMNS]){
   resetGame(tileArray);
 }
 
-// TODO UNTESTED: new arrow intro
 void playIntro(Tile tileArray[][COLUMNS]) {
   resetGame(tileArray);
   
   // Each point is {row, col}
-  // (0,0) is top left of display
+  // (0,0) is top right of display
   // These are the points in an arrow
-  int pattern_pnts[][2] = {{1, 0}, {1, 1}, {1, 2}, {1, 3}, {1, 4}, {0, 5}, {1, 5}, {2, 5}, {1, 6}};
+  int pattern_pnts[][2] = {{1, 6}, {1, 5}, {1, 4}, {1, 3}, {1, 2}, {1, 1}, {1, 0}};
   int num_pnts = sizeof(pattern_pnts) / sizeof(int[2]);
-  int total_delay = 500;
+  int total_delay = 200;
   Serial.println("Playing intro");
 
   int i = 0;
@@ -304,7 +301,6 @@ void playIntro(Tile tileArray[][COLUMNS]) {
 //    Serial.println("Intro over");
 //  }
 
-// TODO UNTESTED: timeout on unclean board.
 int runGame(Tile tileArray[][COLUMNS]){
   resetGame(tileArray);
   int player = WHITE;
