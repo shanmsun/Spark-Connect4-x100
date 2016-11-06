@@ -16,27 +16,27 @@ void setup() {
     Serial.begin(115200);
     //runTestMenu();
   }
-  
+
   for(int row = 0; row < ROWS; row++){
     for(int col= 0; col < COLUMNS; col++){
       //segment was wired from A-B-C-E-F (D is missing...)
       if(row >= 3){
-        TILES_ARRAY[row][col].setCoordinates(row+2, col+1); 
+        TILES_ARRAY[row][col].setCoordinates(row+2, col+1);
       } else {
-        TILES_ARRAY[row][col].setCoordinates(row+1, col+1);  
+        TILES_ARRAY[row][col].setCoordinates(row+1, col+1);
       }
     }
   }
-  
+
   whiteMaxim.clearDisplay(0);
   whiteMaxim.shutdown(0,false);
   whiteMaxim.setIntensity(0, 15);
 
-  
+
   greenMaxim.clearDisplay(0);
   greenMaxim.shutdown(0,false);
   greenMaxim.setIntensity(0, 15);
-  
+
   // put your setup code here, to run once:
 
   //this is a test comment

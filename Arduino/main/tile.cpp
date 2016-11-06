@@ -20,7 +20,7 @@ void Tile::setColour(int colour){
   bool isGreen = false;
   bool isWhite = false;
 
-  char status[100]; 
+  char status[100];
   sprintf(status, "Row: %d - Col :%d", m_row, m_column);
   Serial.println(status);
 
@@ -34,7 +34,7 @@ void Tile::setColour(int colour){
 
   m_colour = colour;
 
-  // transposed because the dig and segs are transposed; 
+  // transposed because the dig and segs are transposed;
   whiteMaxim.setLed(0, m_column, m_row, isWhite);
   //delay(5);
   greenMaxim.setLed(0, m_column, m_row, isGreen);

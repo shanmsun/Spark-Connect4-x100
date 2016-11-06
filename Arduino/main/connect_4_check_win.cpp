@@ -1,4 +1,3 @@
-
 #include "constants.h"
 #include "connect_4_check_win.h"
 
@@ -36,6 +35,7 @@ int checkBoard(int currentPlayer, int winningCombo[4][2]){
   }
   return NO_COLOUR;
 }
+
 int checkRow(int currentPlayer, int row, int winningCombo[4][2]){
   int check = 0;
   for(int col = 0; col < COLUMNS; col++){
@@ -55,64 +55,67 @@ int checkRow(int currentPlayer, int row, int winningCombo[4][2]){
   }
   return NO_COLOUR;
 }
+
 int checkColumn(int currentPlayer, int col, int winningCombo[4][2]){
   int check = 0;
   for(int row = 0; row < ROWS; row++){
     if (TILES_ARRAY[row][col].getColour() == currentPlayer){
-        check += 1;
-        if (check >= 4){
-          for (int j = 0; j < 4; j++) {
-            winningCombo[j][0] = row-j;
-            winningCombo[j][1] = col;
-          }
-          return currentPlayer;
+      check += 1;
+      if (check >= 4){
+        for (int j = 0; j < 4; j++) {
+          winningCombo[j][0] = row-j;
+          winningCombo[j][1] = col;
         }
+        return currentPlayer;
+      }
     }
     else{
-        check = 0;
+      check = 0;
     }
   }
   return NO_COLOUR;
 }
+
 int checkDiagonalLeftUp(int currentPlayer, int row, int col, int winningCombo[4][2]){
   int check = 0;
   while(row < ROWS && col < COLUMNS){
     if (TILES_ARRAY[row][col].getColour() == currentPlayer){
-        check += 1;
-        if (check >= 4){
-          for (int j = 0; j < 4; j++) {
-            winningCombo[j][0] = row-j;
-            winningCombo[j][1] = col-j;
-          }
-          return currentPlayer;
+      check += 1;
+      if (check >= 4){
+        for (int j = 0; j < 4; j++) {
+          winningCombo[j][0] = row-j;
+          winningCombo[j][1] = col-j;
         }
+        return currentPlayer;
+      }
     }
     else{
-        check = 0;
+      check = 0;
     }
     row += 1;
     col += 1;
   }
   return NO_COLOUR;
 }
+
 int checkDiagonalRightUp(int currentPlayer, int row, int col, int winningCombo[4][2]){
   int check = 0;
   while(row < ROWS && col >= 0){
-      if (TILES_ARRAY[row][col].getColour() == currentPlayer){
-          check += 1;
-          if (check >= 4){
-            for (int j = 0; j < 4; j++) {
-              winningCombo[j][0] = row-j;
-              winningCombo[j][1] = col+j;
-            }
-            return currentPlayer;
-          }
+    if (TILES_ARRAY[row][col].getColour() == currentPlayer){
+      check += 1;
+      if (check >= 4){
+        for (int j = 0; j < 4; j++) {
+          winningCombo[j][0] = row-j;
+          winningCombo[j][1] = col+j;
+        }
+        return currentPlayer;
       }
-      else{
-          check = 0;
-      }
-      row += 1;
-      col -= 1;
     }
-    return NO_COLOUR;
+    else{
+      check = 0;
+    }
+    row += 1;
+    col -= 1;
+  }
+  return NO_COLOUR;
 }
