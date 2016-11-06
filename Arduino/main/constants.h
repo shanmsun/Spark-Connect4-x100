@@ -28,7 +28,7 @@ const int WHITE = 2;
 const int DEBOUCE_DELAY = 200;
 
 // How long to wait before timing out a blank game (ms)
-const unsigned long TIMEOUT_VALUE = 1000L * 60L;
+const unsigned long TIMEOUT_VALUE = 3L * 1000L * 60L;
 
 // Status codes
 const int GAME_FINISHED = 0;
